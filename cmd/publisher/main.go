@@ -4,7 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"grpctest/eventpb"
+	"github.com/nlm/grpceventbus/eventpb"
 	"log"
 
 	"google.golang.org/grpc"

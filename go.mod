@@ -1,4 +1,4 @@
-module grpctest
+module github.com/nlm/grpceventbus
 
 go 1.18
 
