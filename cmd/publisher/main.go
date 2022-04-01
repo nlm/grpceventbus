@@ -4,36 +4,67 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/nlm/grpceventbus/eventpb"
 	"log"
+	"time"
+
+	"github.com/nlm/grpceventbus/eventpb"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
 var (
-	connectPort = flag.Int("port", 8080, "connection port")
+	connectPort  = flag.Int("port", 8080, "connection port")
+	sendInterval = flag.Duration("interval", 3*time.Second, "event interval")
+	topicName    = flag.String("topic", "default", "topic name")
 )
 
 func main() {
-	var dialOptions []grpc.DialOption
-	dialOptions = append(dialOptions, grpc.WithTransportCredentials(insecure.NewCredentials()))
-	conn, err := grpc.Dial(fmt.Sprintf("localhost:%d", *connectPort), dialOptions...)
+	flag.Parse()
+	// dial gRPC Server
+	conn, err := grpc.Dial(
+		fmt.Sprintf("localhost:%d", *connectPort),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+	)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
 	client := eventpb.NewApiClient(conn)
-	sc, err := client.Subscribe(context.Background(), &eventpb.SubscribeRequest{})
+	// Event streaming
+	stream, err := client.Publish(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}
-	for {
-		event, err := sc.Recv()
-		if err != nil {
-			log.Println(err)
-			continue
+	ticker := time.NewTicker(*sendInterval)
+	defer ticker.Stop()
+	for t := range ticker.C {
+		// Demo Events
+		events := []*eventpb.Event{
+			{
+				Event: &eventpb.Event_FooEvent{
+					FooEvent: &eventpb.FooEvent{
+						Foo: fmt.Sprint(t.Clock()),
+					},
+				},
+			},
+			{
+				Event: &eventpb.Event_BarEvent{
+					BarEvent: &eventpb.BarEvent{
+						Bar: fmt.Sprint(t.Clock()),
+					},
+				},
+			},
 		}
-		log.Println("event received:", event.Event)
+		// Send Events
+		for _, event := range events {
+			err := stream.Send(&eventpb.PublishRequest{
+				Topic: *topicName,
+				Event: event,
+			})
+			if err != nil {
+				log.Fatal(err)
+			}
+		}
 	}
 }

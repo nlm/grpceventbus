@@ -10,14 +10,14 @@ eventpb/event_grpc.pb.go: eventpb/event.proto
 eventpb/event.pb.go: eventpb/event.proto
 	protoc --go_out=eventpb eventpb/event.proto
 
-server: cmd/server/*.go
-	go build -o $@ $<
+server: cmd/server/*.go eventpb/*.go pkg/pubsub/*.go
+	go build -o $@ ./cmd/server
 
-publisher: cmd/publisher/*.go
-	go build -o $@ $<
+publisher: cmd/publisher/*.go eventpb/*.go
+	go build -o $@ ./cmd/publisher
 
-subscriber: cmd/subscriber/*.go
-	go build -o $@ $<
+subscriber: cmd/subscriber/*.go eventpb/*.go
+	go build -o $@ ./cmd/subscriber
 
 .PHONY: clean
 

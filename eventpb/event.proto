@@ -3,7 +3,7 @@ syntax = "proto3";
 option go_package = ".;eventpb";
 
 service Api {
-  rpc Publish(PublishRequest) returns (Empty) {}
+  rpc Publish(stream PublishRequest) returns (Empty) {}
   rpc Subscribe(SubscribeRequest) returns (stream Event) {}
 }
 
@@ -16,16 +16,20 @@ message BarEvent {
 }
 
 message Event {
-  oneof event {
+  oneof kind {
     FooEvent foo_event = 1;
     BarEvent bar_event = 2;
+    // add more event here
   }
 }
 
 message Empty {}
 
 message PublishRequest {
-  Event event = 1;
+  string topic = 1;
+  Event event = 2;
 }
 
-message SubscribeRequest {}
+message SubscribeRequest {
+  string topic = 1;
+}

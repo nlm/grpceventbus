@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ApiClient interface {
-	Publish(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*Empty, error)
+	Publish(ctx context.Context, opts ...grpc.CallOption) (Api_PublishClient, error)
 	Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (Api_SubscribeClient, error)
 }
 
@@ -34,17 +34,42 @@ func NewApiClient(cc grpc.ClientConnInterface) ApiClient {
 	return &apiClient{cc}
 }
 
-func (c *apiClient) Publish(ctx context.Context, in *PublishRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/Api/Publish", in, out, opts...)
+func (c *apiClient) Publish(ctx context.Context, opts ...grpc.CallOption) (Api_PublishClient, error) {
+	stream, err := c.cc.NewStream(ctx, &Api_ServiceDesc.Streams[0], "/Api/Publish", opts...)
 	if err != nil {
 		return nil, err
 	}
-	return out, nil
+	x := &apiPublishClient{stream}
+	return x, nil
+}
+
+type Api_PublishClient interface {
+	Send(*PublishRequest) error
+	CloseAndRecv() (*Empty, error)
+	grpc.ClientStream
+}
+
+type apiPublishClient struct {
+	grpc.ClientStream
+}
+
+func (x *apiPublishClient) Send(m *PublishRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *apiPublishClient) CloseAndRecv() (*Empty, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(Empty)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
 }
 
 func (c *apiClient) Subscribe(ctx context.Context, in *SubscribeRequest, opts ...grpc.CallOption) (Api_SubscribeClient, error) {
-	stream, err := c.cc.NewStream(ctx, &Api_ServiceDesc.Streams[0], "/Api/Subscribe", opts...)
+	stream, err := c.cc.NewStream(ctx, &Api_ServiceDesc.Streams[1], "/Api/Subscribe", opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -79,7 +104,7 @@ func (x *apiSubscribeClient) Recv() (*Event, error) {
 // All implementations must embed UnimplementedApiServer
 // for forward compatibility
 type ApiServer interface {
-	Publish(context.Context, *PublishRequest) (*Empty, error)
+	Publish(Api_PublishServer) error
 	Subscribe(*SubscribeRequest, Api_SubscribeServer) error
 	mustEmbedUnimplementedApiServer()
 }
@@ -88,8 +113,8 @@ type ApiServer interface {
 type UnimplementedApiServer struct {
 }
 
-func (UnimplementedApiServer) Publish(context.Context, *PublishRequest) (*Empty, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Publish not implemented")
+func (UnimplementedApiServer) Publish(Api_PublishServer) error {
+	return status.Errorf(codes.Unimplemented, "method Publish not implemented")
 }
 func (UnimplementedApiServer) Subscribe(*SubscribeRequest, Api_SubscribeServer) error {
 	return status.Errorf(codes.Unimplemented, "method Subscribe not implemented")
@@ -107,22 +132,30 @@ func RegisterApiServer(s grpc.ServiceRegistrar, srv ApiServer) {
 	s.RegisterService(&Api_ServiceDesc, srv)
 }
 
-func _Api_Publish_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(PublishRequest)
-	if err := dec(in); err != nil {
+func _Api_Publish_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ApiServer).Publish(&apiPublishServer{stream})
+}
+
+type Api_PublishServer interface {
+	SendAndClose(*Empty) error
+	Recv() (*PublishRequest, error)
+	grpc.ServerStream
+}
+
+type apiPublishServer struct {
+	grpc.ServerStream
+}
+
+func (x *apiPublishServer) SendAndClose(m *Empty) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *apiPublishServer) Recv() (*PublishRequest, error) {
+	m := new(PublishRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
-	if interceptor == nil {
-		return srv.(ApiServer).Publish(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/Api/Publish",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ApiServer).Publish(ctx, req.(*PublishRequest))
-	}
-	return interceptor(ctx, in, info, handler)
+	return m, nil
 }
 
 func _Api_Subscribe_Handler(srv interface{}, stream grpc.ServerStream) error {
@@ -152,13 +185,13 @@ func (x *apiSubscribeServer) Send(m *Event) error {
 var Api_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "Api",
 	HandlerType: (*ApiServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Publish",
-			Handler:    _Api_Publish_Handler,
-		},
-	},
+	Methods:     []grpc.MethodDesc{},
 	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "Publish",
+			Handler:       _Api_Publish_Handler,
+			ClientStreams: true,
+		},
 		{
 			StreamName:    "Subscribe",
 			Handler:       _Api_Subscribe_Handler,
