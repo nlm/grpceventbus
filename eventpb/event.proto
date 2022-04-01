@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = ".;eventpb";
+
+service Api {
+  rpc Publish(PublishRequest) returns (Empty) {}
+  rpc Subscribe(SubscribeRequest) returns (stream Event) {}
+}
+
+message FooEvent {
+  string foo = 1;
+}
+
+message BarEvent {
+  string bar = 1;
+}
+
+message Event {
+  oneof event {
+    FooEvent foo_event = 1;
+    BarEvent bar_event = 2;
+  }
+}
+
+message Empty {}
+
+message PublishRequest {
+  Event event = 1;
+}
+
+message SubscribeRequest {}
