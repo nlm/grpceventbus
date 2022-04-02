@@ -41,6 +41,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("event received:", event.Event)
+		log.Println("event received:", event.Kind)
 	}
 }

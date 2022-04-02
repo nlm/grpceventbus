@@ -42,14 +42,14 @@ func main() {
 		// Demo Events
 		events := []*eventpb.Event{
 			{
-				Event: &eventpb.Event_FooEvent{
+				Kind: &eventpb.Event_FooEvent{
 					FooEvent: &eventpb.FooEvent{
 						Foo: fmt.Sprint(t.Clock()),
 					},
 				},
 			},
 			{
-				Event: &eventpb.Event_BarEvent{
+				Kind: &eventpb.Event_BarEvent{
 					BarEvent: &eventpb.BarEvent{
 						Bar: fmt.Sprint(t.Clock()),
 					},
