@@ -20,115 +20,21 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type FooEvent struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Foo string `protobuf:"bytes,1,opt,name=foo,proto3" json:"foo,omitempty"`
-}
-
-func (x *FooEvent) Reset() {
-	*x = FooEvent{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_eventpb_event_proto_msgTypes[0]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *FooEvent) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FooEvent) ProtoMessage() {}
-
-func (x *FooEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_eventpb_event_proto_msgTypes[0]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use FooEvent.ProtoReflect.Descriptor instead.
-func (*FooEvent) Descriptor() ([]byte, []int) {
-	return file_eventpb_event_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *FooEvent) GetFoo() string {
-	if x != nil {
-		return x.Foo
-	}
-	return ""
-}
-
-type BarEvent struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	Bar string `protobuf:"bytes,1,opt,name=bar,proto3" json:"bar,omitempty"`
-}
-
-func (x *BarEvent) Reset() {
-	*x = BarEvent{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_eventpb_event_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *BarEvent) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*BarEvent) ProtoMessage() {}
-
-func (x *BarEvent) ProtoReflect() protoreflect.Message {
-	mi := &file_eventpb_event_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use BarEvent.ProtoReflect.Descriptor instead.
-func (*BarEvent) Descriptor() ([]byte, []int) {
-	return file_eventpb_event_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *BarEvent) GetBar() string {
-	if x != nil {
-		return x.Bar
-	}
-	return ""
-}
-
 type Event struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
 	// Types that are assignable to Kind:
-	//	*Event_FooEvent
-	//	*Event_BarEvent
+	//	*Event_FooEvent_
+	//	*Event_BarEvent_
 	Kind isEvent_Kind `protobuf_oneof:"kind"`
 }
 
 func (x *Event) Reset() {
 	*x = Event{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_eventpb_event_proto_msgTypes[2]
+		mi := &file_eventpb_event_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -141,7 +47,7 @@ func (x *Event) String() string {
 func (*Event) ProtoMessage() {}
 
 func (x *Event) ProtoReflect() protoreflect.Message {
-	mi := &file_eventpb_event_proto_msgTypes[2]
+	mi := &file_eventpb_event_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -154,7 +60,7 @@ func (x *Event) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Event.ProtoReflect.Descriptor instead.
 func (*Event) Descriptor() ([]byte, []int) {
-	return file_eventpb_event_proto_rawDescGZIP(), []int{2}
+	return file_eventpb_event_proto_rawDescGZIP(), []int{0}
 }
 
 func (m *Event) GetKind() isEvent_Kind {
@@ -164,15 +70,15 @@ func (m *Event) GetKind() isEvent_Kind {
 	return nil
 }
 
-func (x *Event) GetFooEvent() *FooEvent {
-	if x, ok := x.GetKind().(*Event_FooEvent); ok {
+func (x *Event) GetFooEvent() *Event_FooEvent {
+	if x, ok := x.GetKind().(*Event_FooEvent_); ok {
 		return x.FooEvent
 	}
 	return nil
 }
 
-func (x *Event) GetBarEvent() *BarEvent {
-	if x, ok := x.GetKind().(*Event_BarEvent); ok {
+func (x *Event) GetBarEvent() *Event_BarEvent {
+	if x, ok := x.GetKind().(*Event_BarEvent_); ok {
 		return x.BarEvent
 	}
 	return nil
@@ -182,17 +88,17 @@ type isEvent_Kind interface {
 	isEvent_Kind()
 }
 
-type Event_FooEvent struct {
-	FooEvent *FooEvent `protobuf:"bytes,1,opt,name=foo_event,json=fooEvent,proto3,oneof"`
+type Event_FooEvent_ struct {
+	FooEvent *Event_FooEvent `protobuf:"bytes,1,opt,name=foo_event,json=fooEvent,proto3,oneof"`
 }
 
-type Event_BarEvent struct {
-	BarEvent *BarEvent `protobuf:"bytes,2,opt,name=bar_event,json=barEvent,proto3,oneof"` // add more event here
+type Event_BarEvent_ struct {
+	BarEvent *Event_BarEvent `protobuf:"bytes,2,opt,name=bar_event,json=barEvent,proto3,oneof"` // add more events here
 }
 
-func (*Event_FooEvent) isEvent_Kind() {}
+func (*Event_FooEvent_) isEvent_Kind() {}
 
-func (*Event_BarEvent) isEvent_Kind() {}
+func (*Event_BarEvent_) isEvent_Kind() {}
 
 type Empty struct {
 	state         protoimpl.MessageState
@@ -203,7 +109,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_eventpb_event_proto_msgTypes[3]
+		mi := &file_eventpb_event_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -216,7 +122,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_eventpb_event_proto_msgTypes[3]
+	mi := &file_eventpb_event_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -229,7 +135,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_eventpb_event_proto_rawDescGZIP(), []int{3}
+	return file_eventpb_event_proto_rawDescGZIP(), []int{1}
 }
 
 type PublishRequest struct {
@@ -244,7 +150,7 @@ type PublishRequest struct {
 func (x *PublishRequest) Reset() {
 	*x = PublishRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_eventpb_event_proto_msgTypes[4]
+		mi := &file_eventpb_event_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -257,7 +163,7 @@ func (x *PublishRequest) String() string {
 func (*PublishRequest) ProtoMessage() {}
 
 func (x *PublishRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_eventpb_event_proto_msgTypes[4]
+	mi := &file_eventpb_event_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -270,7 +176,7 @@ func (x *PublishRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PublishRequest.ProtoReflect.Descriptor instead.
 func (*PublishRequest) Descriptor() ([]byte, []int) {
-	return file_eventpb_event_proto_rawDescGZIP(), []int{4}
+	return file_eventpb_event_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *PublishRequest) GetTopic() string {
@@ -298,7 +204,7 @@ type SubscribeRequest struct {
 func (x *SubscribeRequest) Reset() {
 	*x = SubscribeRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_eventpb_event_proto_msgTypes[5]
+		mi := &file_eventpb_event_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -311,7 +217,7 @@ func (x *SubscribeRequest) String() string {
 func (*SubscribeRequest) ProtoMessage() {}
 
 func (x *SubscribeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_eventpb_event_proto_msgTypes[5]
+	mi := &file_eventpb_event_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -324,7 +230,7 @@ func (x *SubscribeRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SubscribeRequest.ProtoReflect.Descriptor instead.
 func (*SubscribeRequest) Descriptor() ([]byte, []int) {
-	return file_eventpb_event_proto_rawDescGZIP(), []int{5}
+	return file_eventpb_event_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SubscribeRequest) GetTopic() string {
@@ -334,35 +240,130 @@ func (x *SubscribeRequest) GetTopic() string {
 	return ""
 }
 
+type Event_FooEvent struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Foo string `protobuf:"bytes,1,opt,name=foo,proto3" json:"foo,omitempty"`
+}
+
+func (x *Event_FooEvent) Reset() {
+	*x = Event_FooEvent{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_eventpb_event_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Event_FooEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Event_FooEvent) ProtoMessage() {}
+
+func (x *Event_FooEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_eventpb_event_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Event_FooEvent.ProtoReflect.Descriptor instead.
+func (*Event_FooEvent) Descriptor() ([]byte, []int) {
+	return file_eventpb_event_proto_rawDescGZIP(), []int{0, 0}
+}
+
+func (x *Event_FooEvent) GetFoo() string {
+	if x != nil {
+		return x.Foo
+	}
+	return ""
+}
+
+type Event_BarEvent struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Bar string `protobuf:"bytes,1,opt,name=bar,proto3" json:"bar,omitempty"`
+}
+
+func (x *Event_BarEvent) Reset() {
+	*x = Event_BarEvent{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_eventpb_event_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Event_BarEvent) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Event_BarEvent) ProtoMessage() {}
+
+func (x *Event_BarEvent) ProtoReflect() protoreflect.Message {
+	mi := &file_eventpb_event_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Event_BarEvent.ProtoReflect.Descriptor instead.
+func (*Event_BarEvent) Descriptor() ([]byte, []int) {
+	return file_eventpb_event_proto_rawDescGZIP(), []int{0, 1}
+}
+
+func (x *Event_BarEvent) GetBar() string {
+	if x != nil {
+		return x.Bar
+	}
+	return ""
+}
+
 var File_eventpb_event_proto protoreflect.FileDescriptor
 
 var file_eventpb_event_proto_rawDesc = []byte{
 	0x0a, 0x13, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x70, 0x62, 0x2f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x2e,
-	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x1c, 0x0a, 0x08, 0x46, 0x6f, 0x6f, 0x45, 0x76, 0x65, 0x6e,
-	0x74, 0x12, 0x10, 0x0a, 0x03, 0x66, 0x6f, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03,
-	0x66, 0x6f, 0x6f, 0x22, 0x1c, 0x0a, 0x08, 0x42, 0x61, 0x72, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12,
-	0x10, 0x0a, 0x03, 0x62, 0x61, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x62, 0x61,
-	0x72, 0x22, 0x63, 0x0a, 0x05, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x28, 0x0a, 0x09, 0x66, 0x6f,
-	0x6f, 0x5f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x09, 0x2e,
-	0x46, 0x6f, 0x6f, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x48, 0x00, 0x52, 0x08, 0x66, 0x6f, 0x6f, 0x45,
-	0x76, 0x65, 0x6e, 0x74, 0x12, 0x28, 0x0a, 0x09, 0x62, 0x61, 0x72, 0x5f, 0x65, 0x76, 0x65, 0x6e,
-	0x74, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x09, 0x2e, 0x42, 0x61, 0x72, 0x45, 0x76, 0x65,
-	0x6e, 0x74, 0x48, 0x00, 0x52, 0x08, 0x62, 0x61, 0x72, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x42, 0x06,
-	0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22,
-	0x44, 0x0a, 0x0e, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x70, 0x69, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x05, 0x74, 0x6f, 0x70, 0x69, 0x63, 0x12, 0x1c, 0x0a, 0x05, 0x65, 0x76, 0x65, 0x6e, 0x74,
-	0x18, 0x02, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x06, 0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x05,
-	0x65, 0x76, 0x65, 0x6e, 0x74, 0x22, 0x28, 0x0a, 0x10, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69,
-	0x62, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x70,
-	0x69, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x70, 0x69, 0x63, 0x32,
-	0x59, 0x0a, 0x03, 0x41, 0x70, 0x69, 0x12, 0x26, 0x0a, 0x07, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73,
-	0x68, 0x12, 0x0f, 0x2e, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x52, 0x65, 0x71, 0x75, 0x65,
-	0x73, 0x74, 0x1a, 0x06, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x28, 0x01, 0x12, 0x2a,
-	0x0a, 0x09, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x12, 0x11, 0x2e, 0x53, 0x75,
-	0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x06,
-	0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x22, 0x00, 0x30, 0x01, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x3b,
-	0x65, 0x76, 0x65, 0x6e, 0x74, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0xab, 0x01, 0x0a, 0x05, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12,
+	0x2e, 0x0a, 0x09, 0x66, 0x6f, 0x6f, 0x5f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x2e, 0x46, 0x6f, 0x6f, 0x45, 0x76,
+	0x65, 0x6e, 0x74, 0x48, 0x00, 0x52, 0x08, 0x66, 0x6f, 0x6f, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12,
+	0x2e, 0x0a, 0x09, 0x62, 0x61, 0x72, 0x5f, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x0b, 0x32, 0x0f, 0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x2e, 0x42, 0x61, 0x72, 0x45, 0x76,
+	0x65, 0x6e, 0x74, 0x48, 0x00, 0x52, 0x08, 0x62, 0x61, 0x72, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x1a,
+	0x1c, 0x0a, 0x08, 0x46, 0x6f, 0x6f, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x66,
+	0x6f, 0x6f, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x66, 0x6f, 0x6f, 0x1a, 0x1c, 0x0a,
+	0x08, 0x42, 0x61, 0x72, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x62, 0x61, 0x72,
+	0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x62, 0x61, 0x72, 0x42, 0x06, 0x0a, 0x04, 0x6b,
+	0x69, 0x6e, 0x64, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x44, 0x0a, 0x0e,
+	0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14,
+	0x0a, 0x05, 0x74, 0x6f, 0x70, 0x69, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74,
+	0x6f, 0x70, 0x69, 0x63, 0x12, 0x1c, 0x0a, 0x05, 0x65, 0x76, 0x65, 0x6e, 0x74, 0x18, 0x02, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x06, 0x2e, 0x45, 0x76, 0x65, 0x6e, 0x74, 0x52, 0x05, 0x65, 0x76, 0x65,
+	0x6e, 0x74, 0x22, 0x28, 0x0a, 0x10, 0x53, 0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x70, 0x69, 0x63, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x70, 0x69, 0x63, 0x32, 0x59, 0x0a, 0x03,
+	0x41, 0x70, 0x69, 0x12, 0x26, 0x0a, 0x07, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x12, 0x0f,
+	0x2e, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x73, 0x68, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a,
+	0x06, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x28, 0x01, 0x12, 0x2a, 0x0a, 0x09, 0x53,
+	0x75, 0x62, 0x73, 0x63, 0x72, 0x69, 0x62, 0x65, 0x12, 0x11, 0x2e, 0x53, 0x75, 0x62, 0x73, 0x63,
+	0x72, 0x69, 0x62, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x06, 0x2e, 0x45, 0x76,
+	0x65, 0x6e, 0x74, 0x22, 0x00, 0x30, 0x01, 0x42, 0x0b, 0x5a, 0x09, 0x2e, 0x3b, 0x65, 0x76, 0x65,
+	0x6e, 0x74, 0x70, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -379,21 +380,21 @@ func file_eventpb_event_proto_rawDescGZIP() []byte {
 
 var file_eventpb_event_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_eventpb_event_proto_goTypes = []interface{}{
-	(*FooEvent)(nil),         // 0: FooEvent
-	(*BarEvent)(nil),         // 1: BarEvent
-	(*Event)(nil),            // 2: Event
-	(*Empty)(nil),            // 3: Empty
-	(*PublishRequest)(nil),   // 4: PublishRequest
-	(*SubscribeRequest)(nil), // 5: SubscribeRequest
+	(*Event)(nil),            // 0: Event
+	(*Empty)(nil),            // 1: Empty
+	(*PublishRequest)(nil),   // 2: PublishRequest
+	(*SubscribeRequest)(nil), // 3: SubscribeRequest
+	(*Event_FooEvent)(nil),   // 4: Event.FooEvent
+	(*Event_BarEvent)(nil),   // 5: Event.BarEvent
 }
 var file_eventpb_event_proto_depIdxs = []int32{
-	0, // 0: Event.foo_event:type_name -> FooEvent
-	1, // 1: Event.bar_event:type_name -> BarEvent
-	2, // 2: PublishRequest.event:type_name -> Event
-	4, // 3: Api.Publish:input_type -> PublishRequest
-	5, // 4: Api.Subscribe:input_type -> SubscribeRequest
-	3, // 5: Api.Publish:output_type -> Empty
-	2, // 6: Api.Subscribe:output_type -> Event
+	4, // 0: Event.foo_event:type_name -> Event.FooEvent
+	5, // 1: Event.bar_event:type_name -> Event.BarEvent
+	0, // 2: PublishRequest.event:type_name -> Event
+	2, // 3: Api.Publish:input_type -> PublishRequest
+	3, // 4: Api.Subscribe:input_type -> SubscribeRequest
+	1, // 5: Api.Publish:output_type -> Empty
+	0, // 6: Api.Subscribe:output_type -> Event
 	5, // [5:7] is the sub-list for method output_type
 	3, // [3:5] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -408,30 +409,6 @@ func file_eventpb_event_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_eventpb_event_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FooEvent); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_eventpb_event_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*BarEvent); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_eventpb_event_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Event); i {
 			case 0:
 				return &v.state
@@ -443,7 +420,7 @@ func file_eventpb_event_proto_init() {
 				return nil
 			}
 		}
-		file_eventpb_event_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+		file_eventpb_event_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Empty); i {
 			case 0:
 				return &v.state
@@ -455,7 +432,7 @@ func file_eventpb_event_proto_init() {
 				return nil
 			}
 		}
-		file_eventpb_event_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+		file_eventpb_event_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*PublishRequest); i {
 			case 0:
 				return &v.state
@@ -467,7 +444,7 @@ func file_eventpb_event_proto_init() {
 				return nil
 			}
 		}
-		file_eventpb_event_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+		file_eventpb_event_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SubscribeRequest); i {
 			case 0:
 				return &v.state
@@ -479,10 +456,34 @@ func file_eventpb_event_proto_init() {
 				return nil
 			}
 		}
+		file_eventpb_event_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Event_FooEvent); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_eventpb_event_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Event_BarEvent); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
-	file_eventpb_event_proto_msgTypes[2].OneofWrappers = []interface{}{
-		(*Event_FooEvent)(nil),
-		(*Event_BarEvent)(nil),
+	file_eventpb_event_proto_msgTypes[0].OneofWrappers = []interface{}{
+		(*Event_FooEvent_)(nil),
+		(*Event_BarEvent_)(nil),
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

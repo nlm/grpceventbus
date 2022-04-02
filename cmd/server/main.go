@@ -13,6 +13,7 @@ import (
 
 var (
 	listenPort = flag.Int("port", 8080, "listen port")
+	useNats    = flag.Bool("nats", false, "use nats backend")
 )
 
 func main() {
@@ -25,11 +26,13 @@ func main() {
 	}
 	// Build gRPC Server
 	grpcServer := grpc.NewServer()
-	// Build NotificationServer
-	notifServer := NewNotificationServer()
 	// Register Services
-	eventpb.RegisterApiServer(grpcServer, notifServer)
-	// Seerver
+	if *useNats {
+		eventpb.RegisterApiServer(grpcServer, NewNatsNotificationServer())
+	} else {
+		eventpb.RegisterApiServer(grpcServer, NewNotificationServer())
+	}
+	// Server
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatal(err)
 	}
