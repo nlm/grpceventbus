@@ -41,6 +41,13 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		log.Println("event received:", event.Kind)
+		switch ev := event.Kind.(type) {
+		case *eventpb.Event_FooEvent_:
+			log.Println("foo event received:", ev)
+		case *eventpb.Event_BarEvent_:
+			log.Println("bar event received:", ev)
+		default:
+			log.Println("unknown event received:", ev)
+		}
 	}
 }

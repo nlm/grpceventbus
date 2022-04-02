@@ -7,19 +7,20 @@ service Api {
   rpc Subscribe(SubscribeRequest) returns (stream Event) {}
 }
 
-message FooEvent {
-  string foo = 1;
-}
-
-message BarEvent {
-  string bar = 1;
-}
-
 message Event {
+
+  message FooEvent {
+    string foo = 1;
+  }
+
+  message BarEvent {
+    string bar = 1;
+  }
+
   oneof kind {
     FooEvent foo_event = 1;
     BarEvent bar_event = 2;
-    // add more event here
+    // add more events here
   }
 }
 

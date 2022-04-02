@@ -42,15 +42,15 @@ func main() {
 		// Demo Events
 		events := []*eventpb.Event{
 			{
-				Kind: &eventpb.Event_FooEvent{
-					FooEvent: &eventpb.FooEvent{
+				Kind: &eventpb.Event_FooEvent_{
+					FooEvent: &eventpb.Event_FooEvent{
 						Foo: fmt.Sprint(t.Clock()),
 					},
 				},
 			},
 			{
-				Kind: &eventpb.Event_BarEvent{
-					BarEvent: &eventpb.BarEvent{
+				Kind: &eventpb.Event_BarEvent_{
+					BarEvent: &eventpb.Event_BarEvent{
 						Bar: fmt.Sprint(t.Clock()),
 					},
 				},
@@ -65,6 +65,7 @@ func main() {
 			if err != nil {
 				log.Fatal(err)
 			}
+			log.Println("event sent:", event)
 		}
 	}
 }

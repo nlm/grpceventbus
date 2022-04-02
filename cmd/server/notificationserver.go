@@ -30,6 +30,7 @@ func (ns *NotificationServer) Close() {
 }
 
 func (ns *NotificationServer) Publish(stream eventpb.Api_PublishServer) error {
+	// Handle Publishing
 	for {
 		pr, err := stream.Recv()
 		switch {
@@ -44,10 +45,10 @@ func (ns *NotificationServer) Publish(stream eventpb.Api_PublishServer) error {
 }
 
 func (ns *NotificationServer) Subscribe(sr *eventpb.SubscribeRequest, stream eventpb.Api_SubscribeServer) error {
-	ctx := stream.Context()
+	// Connect to NATS
 	sub := ns.pubsub.Subscribe(sr.Topic)
 	ns.logger.Println("subscribed")
-
+	ctx := stream.Context()
 	for {
 		select {
 		case event := <-sub.C():
